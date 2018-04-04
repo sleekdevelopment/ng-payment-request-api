@@ -1,6 +1,6 @@
 {
   "name": "ng-payment-request-api",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "private": false,
   "dependencies": {
@@ -43,6 +43,14 @@
     "type": "git",
     "url": "https://github.com/sleekdevelopment/ng-payment-request-api"
   },
+  "keywords": [
+    "angular2",
+    "angular4",
+    "angular",
+    "payment request api",
+    "apple pay",
+    "progressive web app"
+  ],
   "author": "Hai Levi <hai@sleekdevelopment.com>",
   "description": "Payment Request Api wrapper for angular 4/5",
   "main": "bundles/payment-directive.umd.js",
