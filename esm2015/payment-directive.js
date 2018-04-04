@@ -28,7 +28,7 @@ class PaymentRequestDirective {
                             value: 0
                         }
                     },
-                    shippingOptions: [],
+                    shippingOptions: this.shippingOptions,
                     displayItems: this.items
                 },
                 payerOptions: {}
@@ -77,18 +77,18 @@ class PaymentRequestDirective {
         this.payment.addEventListener('shippingoptionchange', (event) => {
             const /** @type {?} */ paymentRequest = event.target;
             const /** @type {?} */ selectedId = (/** @type {?} */ (paymentRequest)).shippingOption;
+            let /** @type {?} */ res = {};
             this.options.paymentDetails.shippingOptions.forEach((shippingOption) => {
                 if (shippingOption.id === selectedId) {
                     shippingOption.selected = true;
-                    console.log(this.options.paymentDetails.total.amount.value);
                     this.options.paymentDetails.total.amount.value = /** @type {?} */ ((parseFloat(this.options.paymentDetails.total.amount.value) + parseFloat(shippingOption.amount.value)));
-                    console.log(shippingOption.amount.value);
-                    console.log(this.options.paymentDetails.total.amount.value);
+                    res.shippingOption = shippingOption;
+                    res.total = this.options.paymentDetails.total.amount.value;
                 }
             });
-            console.log(this.options.paymentDetails);
             (/** @type {?} */ (event)).updateWith(new Promise((resolve) => {
-                this.onShippingOptionChange.emit();
+                //return updated total value and selected shipping option.
+                this.onShippingOptionChange.emit(res);
                 resolve(this.options.paymentDetails);
             }));
         });

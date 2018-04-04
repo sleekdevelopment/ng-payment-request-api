@@ -23,7 +23,7 @@ var PaymentRequestDirective = /** @class */ (function () {
                             value: 0
                         }
                     },
-                    shippingOptions: [],
+                    shippingOptions: this.shippingOptions,
                     displayItems: this.items
                 },
                 payerOptions: {}
@@ -62,18 +62,17 @@ var PaymentRequestDirective = /** @class */ (function () {
         this.payment.addEventListener('shippingoptionchange', function (event) {
             var paymentRequest = event.target;
             var selectedId = ((paymentRequest)).shippingOption;
+            var res = {};
             _this.options.paymentDetails.shippingOptions.forEach(function (shippingOption) {
                 if (shippingOption.id === selectedId) {
                     shippingOption.selected = true;
-                    console.log(_this.options.paymentDetails.total.amount.value);
                     _this.options.paymentDetails.total.amount.value = ((parseFloat(_this.options.paymentDetails.total.amount.value) + parseFloat(shippingOption.amount.value)));
-                    console.log(shippingOption.amount.value);
-                    console.log(_this.options.paymentDetails.total.amount.value);
+                    res.shippingOption = shippingOption;
+                    res.total = _this.options.paymentDetails.total.amount.value;
                 }
             });
-            console.log(_this.options.paymentDetails);
             ((event)).updateWith(new Promise(function (resolve) {
-                _this.onShippingOptionChange.emit();
+                _this.onShippingOptionChange.emit(res);
                 resolve(_this.options.paymentDetails);
             }));
         });

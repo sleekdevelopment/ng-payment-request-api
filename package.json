@@ -1,6 +1,6 @@
 {
-  "name": "payment-directive",
-  "version": "0.0.0",
+  "name": "ng-payment-request-api",
+  "version": "1.0.1",
   "license": "MIT",
   "private": false,
   "dependencies": {
@@ -39,6 +39,12 @@
     "tslint": "~5.9.1",
     "typescript": "~2.5.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sleekdevelopment/ng-payment-request-api"
+  },
+  "author": "Hai Levi <hai@sleekdevelopment.com>",
+  "description": "Payment Request Api wrapper for angular 4/5",
   "main": "bundles/payment-directive.umd.js",
   "module": "esm5/payment-directive.js",
   "es2015": "esm2015/payment-directive.js",

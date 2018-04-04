@@ -1,31 +1,146 @@
-# PaymentDirective
+# Angular Payment Request Api
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.1.
+Payment Request wrapper  with TypeScript for angular +4.
 
-## Development server
+## Installation
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+To install this library, run:
+```bash
+$ npm install ng-payment-request-api --save
+```
 
-## Code scaffolding
+## How to use
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```typescript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+//Import payment request api module
+import {PaymentRequestModule} from "ng-payment-request-api";
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    PaymentRequestModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
 
-## Running unit tests
+```
+Parent Component
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```typescript
+import { Component } from '@angular/core';
 
-## Running end-to-end tests
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'app';
+  paymentOptions = {
+    supportedPaymentMethods: [
+      // regular payment
+      {
+        supportedMethods: 'basic-card',
+      },
+      //apply pay support. currently on safari ios only apply pay supported.
+      {
+        supportedMethods: 'https://apple.com/apple-pay',
+        data: {
+          version: 2,
+          supportedNetworks:  ['amex', 'jcb', 'visa'],
+          countryCode: 'US',
+          merchantIdentifier: 'merchant.sleek.com',
+          merchantCapabilities: ['supportsDebit', 'supportsCredit', 'supports3DS']
+        }
+      }
+    ]
+  };
+  items: PaymentItem[] = [
+    {
+      label: 'product 1',
+      amount: {
+        value: 5,
+        currency: "USD"
+      }
+    },
+    {
+      label: 'product 2',
+      amount: {
+        value: 8,
+        currency: "USD"
+      }
+    }
+    ];
+  shippingOptions = [{
+    id: 'economy',
+    label: 'Economy Shipping (5-7 Days)',
+    amount: {
+      currency: 'USD',
+      value: '0',
+    },
+  }, {
+    id: 'express',
+    label: 'Express Shipping (2-3 Days)',
+    amount: {
+      currency: 'USD',
+      value: '5',
+    },
+  }, {
+    id: 'next-day',
+    label: 'Next Day Delivery',
+    amount: {
+      currency: 'USD',
+      value: '12',
+    },
+  }];
+  constructor() {}
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+  chargeClient(paymentResponse) {
+    //TODO actual charge.
+  }
 
-## Further help
+  updateShippingOption(response) {
+    // example:
+    // response =  {
+    //     total: 55,
+    //     shippingOption :  {
+    //       id: 'next-day',
+    //       label: 'Next Day Delivery',
+    //       amount: {
+    //       currency: 'USD',
+    //           value: '12',
+    //       }
+    //     }
+    //  }
+    }
+}
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-# ng-payment-request
-# ng-payment-request
-# ng-payment-request-api
-# ng-payment-request-api
+```
+And just use the Directive in your HTML
+
+```html
+ <button appPaymentRequest
+          [shippingOptions]="shippingOptions"
+          [options]="paymentOptions"
+          [items]="items"
+          (onCheckout)="chargeClient($event)"
+          (onShippingOptionChange)="updateShippingOption($event)">
+      Checkout
+  </button>
+```
+
+paymentOptions configuration can be found [here](https://developer.mozilla.org/en-US/docs/Web/API/Payment_Request_API). If you don't provide any parameters, default one are used.
+
+
+## License
+
+MIT © [Hai levi from Sleek Development](mailto:hai@sleekdevelopment.com)
